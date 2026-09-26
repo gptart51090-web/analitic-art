@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ru"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Оцифровка бизнеса на Wildberries и Ozon: плановая юнит-экономика, аналитика и понятные отчёты.">
+  <meta name="theme-color" content="#10172a">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%236c4df6'/%3E%3Cpath d='M19 46 29 17h7l10 29h-8l-2-7H28l-2 7zm11-14h5l-2-8z' fill='white'/%3E%3C/svg%3E">
+  <title>Analitic Art — оцифровка маркетплейсов</title>
+  <style>
+    :root {
+      --ink: #10172a;
+      --muted: #5e6678;
+      --paper: #f5f7fb;
+      --card: rgba(255, 255, 255, .82);
+      --line: rgba(16, 23, 42, .11);
+      --violet: #6c4df6;
+      --blue: #2e7cf6;
+      --mint: #16b98e;
+      --shadow: 0 24px 80px rgba(31, 42, 75, .12);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 8% 4%, rgba(108, 77, 246, .14), transparent 28rem),
+        radial-gradient(circle at 92% 18%, rgba(22, 185, 142, .11), transparent 26rem),
+        var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .wrap { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(245, 247, 251, .76);
+      border-bottom: 1px solid rgba(16, 23, 42, .06);
+    }
+
+    .nav-inner {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 11px;
+      text-decoration: none;
+      font-weight: 850;
+      letter-spacing: -.03em;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      color: white;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--violet), var(--blue));
+      box-shadow: 0 10px 24px rgba(87, 82, 232, .28);
+    }
+
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a { color: var(--muted); font-size: 14px; font-weight: 650; text-decoration: none; }
+    .nav-links a:hover { color: var(--ink); }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 0 22px;
+      border: 1px solid transparent;
+      border-radius: 15px;
+      background: var(--ink);
+      color: white;
+      font-weight: 750;
+      text-decoration: none;
+      box-shadow: 0 14px 30px rgba(16, 23, 42, .16);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); box-shadow: 0 18px 36px rgba(16, 23, 42, .22); }
+    .button.secondary { color: var(--ink); background: transparent; border-color: var(--line); box-shadow: none; }
+    .button.secondary:hover { background: white; }
+
+    .hero {
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      align-items: center;
+      gap: 68px;
+      padding: 86px 0 76px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 12px;
+      border: 1px solid rgba(108, 77, 246, .18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .72);
+      color: #5137cc;
+      font-size: 12px;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 5px rgba(22, 185, 142, .12); }
+    h1 { max-width: 760px; margin: 24px 0 22px; font-size: clamp(44px, 6vw, 82px); line-height: .98; letter-spacing: -.065em; }
+    h1 span { color: transparent; background: linear-gradient(110deg, var(--violet), var(--blue), var(--mint)); background-clip: text; -webkit-background-clip: text; }
+    .lead { max-width: 660px; margin: 0; color: var(--muted); font-size: clamp(18px, 2vw, 22px); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+    .chip { padding: 9px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.6); color: var(--muted); font-size: 13px; font-weight: 700; }
+
+    .dashboard {
+      position: relative;
+      overflow: hidden;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.9);
+      border-radius: 32px;
+      background: rgba(255,255,255,.74);
+      box-shadow: var(--shadow);
+      transform: rotate(1.5deg);
+    }
+
+    .dashboard::after { content: ""; position: absolute; inset: auto -70px -85px auto; width: 220px; height: 220px; border-radius: 50%; background: rgba(108,77,246,.12); filter: blur(2px); }
+    .dash-top { display: flex; align-items: center; justify-content: space-between; padding: 5px 5px 18px; }
+    .dash-title { font-size: 14px; font-weight: 850; }
+    .dots { display: flex; gap: 5px; }
+    .dots i { width: 8px; height: 8px; border-radius: 50%; background: #d4d8e2; }
+    .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .metric { padding: 17px; border: 1px solid var(--line); border-radius: 19px; background: white; }
+    .metric small { display: block; color: var(--muted); font-weight: 650; }
+    .metric strong { display: block; margin-top: 7px; font-size: 24px; letter-spacing: -.04em; }
+    .metric .up { color: var(--mint); font-size: 12px; }
+
+    .chart { position: relative; height: 180px; margin-top: 10px; padding: 20px 16px 12px; border: 1px solid var(--line); border-radius: 20px; background: white; }
+    .chart-label { color: var(--muted); font-size: 12px; font-weight: 750; }
+    .bars { position: absolute; inset: 54px 18px 18px; display: flex; align-items: end; gap: 9px; }
+    .bar { flex: 1; min-height: 20px; border-radius: 7px 7px 4px 4px; background: linear-gradient(180deg, var(--violet), var(--blue)); opacity: .9; }
+
+    section { padding: 94px 0; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 36px; margin-bottom: 38px; }
+    .kicker { margin: 0 0 9px; color: var(--violet); font-size: 12px; font-weight: 850; letter-spacing: .11em; text-transform: uppercase; }
+    h2 { max-width: 720px; margin: 0; font-size: clamp(34px, 5vw, 56px); line-height: 1.04; letter-spacing: -.055em; }
+    .section-note { max-width: 390px; margin: 0; color: var(--muted); }
+
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { min-height: 280px; padding: 28px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); box-shadow: 0 16px 50px rgba(31,42,75,.06); }
+    .icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 15px; background: #eeeaff; color: var(--violet); font-size: 21px; font-weight: 900; }
+    .card:nth-child(2) .icon { color: var(--blue); background: #e8f1ff; }
+    .card:nth-child(3) .icon { color: #087c60; background: #e5f8f2; }
+    .card h3 { margin: 28px 0 12px; font-size: 23px; letter-spacing: -.035em; }
+    .card p { margin: 0; color: var(--muted); }
+
+    .process { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; counter-reset: step; }
+    .step { position: relative; min-height: 210px; padding: 28px 30px 28px 92px; overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: white; counter-increment: step; }
+    .step::before { content: "0" counter(step); position: absolute; top: 25px; left: 28px; color: var(--violet); font-size: 15px; font-weight: 900; }
+    .step h3 { margin: 0 0 10px; font-size: 23px; letter-spacing: -.035em; }
+    .step p { margin: 0; color: var(--muted); }
+
+    .cta {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(34px, 7vw, 76px);
+      border-radius: 36px;
+      color: white;
+      background: var(--ink);
+      box-shadow: var(--shadow);
+    }
+    .cta::after { content: ""; position: absolute; width: 420px; height: 420px; right: -100px; bottom: -250px; border-radius: 50%; background: linear-gradient(135deg, var(--violet), var(--mint)); filter: blur(8px); opacity: .8; }
+    .cta-content { position: relative; z-index: 1; max-width: 760px; }
+    .cta h2 { margin-bottom: 18px; }
+    .cta p { max-width: 610px; margin: 0 0 30px; color: #bdc4d4; font-size: 18px; }
+    .cta .button { color: var(--ink); background: white; box-shadow: none; }
+
+    footer { padding: 34px 0 48px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 24px; color: var(--muted); font-size: 13px; }
+
+    @media (max-width: 860px) {
+      .nav-links a:not(.button) { display: none; }
+      .hero { min-height: auto; grid-template-columns: 1fr; gap: 52px; padding-top: 64px; }
+      .dashboard { max-width: 600px; transform: none; }
+      .section-head { align-items: start; flex-direction: column; }
+      .cards { grid-template-columns: 1fr; }
+      .card { min-height: auto; }
+    }
+
+    @media (max-width: 620px) {
+      .wrap { width: min(100% - 28px, 1160px); }
+      .nav-inner { min-height: 64px; }
+      .nav-links .button { min-height: 42px; padding: 0 14px; font-size: 13px; }
+      h1 { font-size: 46px; }
+      .metrics, .process { grid-template-columns: 1fr; }
+      .step { min-height: auto; padding-left: 72px; }
+      section { padding: 72px 0; }
+      .footer-inner { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="logo" href="#top" aria-label="Analitic Art — на главную">
+        <span class="logo-mark">A</span>
+        <span>Analitic Art</span>
+      </a>
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="#services">Возможности</a>
+        <a href="#process">Как работаю</a>
+        <a class="button" href="#contact">Обсудить задачу</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="wrap hero">
+      <div>
+        <span class="eyebrow">WB · Ozon · аналитика</span>
+        <h1>Оцифровываю бизнес на <span>маркетплейсах</span></h1>
+        <p class="lead">Помогаю увидеть реальную экономику товара: собираю показатели в понятную систему, считаю прибыль и превращаю таблицы в решения.</p>
+        <div class="hero-actions">
+          <a class="button" href="#contact">Обсудить задачу <span aria-hidden="true">→</span></a>
+          <a class="button secondary" href="#services">Что можно посчитать</a>
+        </div>
+        <div class="chips" aria-label="Направления работы">
+          <span class="chip">Плановая юнит-экономика</span>
+          <span class="chip">Понятные формулы</span>
+          <span class="chip">WB + Ozon</span>
+        </div>
+      </div>
+
+      <div class="dashboard" aria-label="Пример аналитической панели">
+        <div class="dash-top">
+          <span class="dash-title">Экономика товара · пример</span>
+          <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        </div>
+        <div class="metrics">
+          <div class="metric"><small>Маржа</small><strong>27,4%</strong><span class="up">плановая</span></div>
+          <div class="metric"><small>Прибыль / ед.</small><strong>684 ₽</strong><span class="up">после расходов</span></div>
+          <div class="metric"><small>ДРР</small><strong>11,2%</strong><span class="up">в пределах плана</span></div>
+          <div class="metric"><small>Точка безубыт.</small><strong>1 946 ₽</strong><span class="up">минимальная цена</span></div>
+        </div>
+        <div class="chart">
+          <span class="chart-label">Структура расходов</span>
+          <div class="bars" aria-hidden="true">
+            <span class="bar" style="height:52%"></span><span class="bar" style="height:74%"></span><span class="bar" style="height:42%"></span><span class="bar" style="height:87%"></span><span class="bar" style="height:61%"></span><span class="bar" style="height:34%"></span><span class="bar" style="height:68%"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="services">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="kicker">Что получит бизнес</p><h2>Цифры, которые помогают принимать решения</h2></div>
+          <p class="section-note">Не просто отчёт, а прозрачная модель: видно, из чего складывается результат и какой показатель нужно изменить.</p>
+        </div>
+        <div class="cards">
+          <article class="card"><div class="icon">₽</div><h3>Юнит-экономика</h3><p>Цена, себестоимость, комиссии, логистика, реклама, налоги и возвраты — в одном понятном расчёте.</p></article>
+          <article class="card"><div class="icon">↗</div><h3>Сценарии роста</h3><p>Можно заранее проверить, что произойдёт с прибылью при изменении цены, рекламы или процента выкупа.</p></article>
+          <article class="card"><div class="icon">✓</div><h3>Контроль данных</h3><p>Каждая цифра имеет источник и формулу. Пропуски не маскируются нулями, а требуют проверки.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="kicker">Процесс</p><h2>От вопроса до понятной модели</h2></div>
+        </div>
+        <div class="process">
+          <article class="step"><h3>Фиксируем цель</h3><p>Определяем, какое решение должна поддерживать модель: выбор цены, оценка товара или рекламного бюджета.</p></article>
+          <article class="step"><h3>Собираем вводные</h3><p>Проверяем обязательные данные и отдельно отмечаем всё, чего пока не хватает.</p></article>
+          <article class="step"><h3>Считаем прозрачно</h3><p>Расчёты выполняет код по утверждённым формулам — одинаково и воспроизводимо.</p></article>
+          <article class="step"><h3>Проверяем сценарии</h3><p>Тестируем оптимистичный, базовый и рискованный варианты перед реальными вложениями.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="cta">
+          <div class="cta-content">
+            <p class="kicker">Первый шаг</p>
+            <h2>Начнём с одного товара и одного понятного расчёта</h2>
+            <p>Опишите товар, плановую цену и основные расходы. Я помогу собрать модель и увидеть слабые места до запуска.</p>
+            <a class="button" href="https://github.com/gptart51090-web" target="_blank" rel="noopener noreferrer">Связаться через GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-inner">
+      <span>© <span id="year">2026</span> Analitic Art</span>
+      <span>Оцифровка и аналитика бизнеса на маркетплейсах</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+
+</body></html>
