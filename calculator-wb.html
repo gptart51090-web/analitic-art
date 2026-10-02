@@ -14,6 +14,7 @@
     .calc-card h2,.calc-card h3{margin-top:0}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
     .field{display:grid;gap:7px}.field label{font-size:.92rem;font-weight:700}.field small{color:#687083;line-height:1.35}
     .field input,.field select{width:100%;border:1px solid #cfd5e2;border-radius:12px;padding:12px 13px;background:#fff;color:#10172a;font:inherit}
+    .volume-group[hidden]{display:none}
     .field input:focus,.field select:focus{outline:3px solid rgba(108,77,246,.16);border-color:#6c4df6}
     .group-title{grid-column:1/-1;margin:14px 0 0;padding-top:17px;border-top:1px solid #e7e9ef;font-size:1.05rem}
     .result-card{position:sticky;top:94px;background:#11192c;color:#fff;border:0}.result-card p{color:#cbd2e1}
@@ -44,9 +45,11 @@
         <div class="field"><label for="commission">Комиссия WB, %</label><input id="commission" inputmode="decimal" value="24,5"><small>Берите ставку своей категории из кабинета WB.</small></div>
 
         <h3 class="group-title">Логистика и выкуп</h3>
-        <div class="field"><label for="length">Длина, см</label><input id="length" inputmode="decimal" value="30"></div>
-        <div class="field"><label for="width">Ширина, см</label><input id="width" inputmode="decimal" value="20"></div>
-        <div class="field"><label for="height">Высота, см</label><input id="height" inputmode="decimal" value="5"></div>
+        <div class="field"><label for="volumeMode">Как указать объём</label><select id="volumeMode"><option value="dimensions" selected>По габаритам, см</option><option value="liters">Готовый объём, л</option></select></div>
+        <div class="field volume-group dimension-input"><label for="length">Длина, см</label><input id="length" inputmode="decimal" value="30"></div>
+        <div class="field volume-group dimension-input"><label for="width">Ширина, см</label><input id="width" inputmode="decimal" value="20"></div>
+        <div class="field volume-group dimension-input"><label for="height">Высота, см</label><input id="height" inputmode="decimal" value="5"></div>
+        <div class="field volume-group liters-input" hidden><label for="volumeLiters">Объём товара, л</label><input id="volumeLiters" inputmode="decimal" value="3"><small>Введите готовый литраж из карточки товара или кабинета WB.</small></div>
         <div class="field"><label for="logCoef">Коэффициент логистики</label><input id="logCoef" inputmode="decimal" value="1"><small>1 = 100%, 1,7 = 170%.</small></div>
         <div class="field"><label for="buyout">Процент выкупа, %</label><input id="buyout" inputmode="decimal" value="90" min="1" max="100"><small>Вводится вручную. 100% — без возвратов.</small></div>
         <div class="field"><label for="storage">Хранение на единицу, ₽</label><input id="storage" inputmode="decimal" value="0"></div>
@@ -98,7 +101,7 @@
 </main>
 <footer><div class="wrap footer-inner"><span>© 2026 Искусство аналитики</span><span><a href="./">Главная</a> · <a href="wildberries.html">Wildberries</a> · <a href="blog/">Блог</a></span></div></footer>
 <script>
-  const ids=['price','cost','spp','commission','length','width','height','logCoef','buyout','storage','acceptance','acquiring','internalAds','externalAds','tax','taxBase','vat','packaging','other','targetMargin','targetRoi'];
+  const ids=['price','cost','spp','commission','volumeMode','length','width','height','volumeLiters','logCoef','buyout','storage','acceptance','acquiring','internalAds','externalAds','tax','taxBase','vat','packaging','other','targetMargin','targetRoi'];
   const num=id=>{const raw=document.getElementById(id).value.replace(/\s/g,'').replace(',','.');const value=Number(raw);return Number.isFinite(value)?value:0};
   const rate=id=>num(id)/100;
   const rub=value=>Number.isFinite(value)?new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:2}).format(value):'недостижимо';
@@ -111,7 +114,9 @@
     const internalAds=Math.max(0,rate('internalAds')),externalAds=Math.max(0,rate('externalAds'));
     const tax=Math.max(0,rate('tax')),vat=Math.max(0,rate('vat'));
     const buyout=Math.min(1,Math.max(.01,rate('buyout'))),coef=Math.max(0,num('logCoef'));
-    const volume=Math.max(0,num('length'))*Math.max(0,num('width'))*Math.max(0,num('height'))/1000;
+    const volume=document.getElementById('volumeMode').value==='liters'
+      ?Math.max(0,num('volumeLiters'))
+      :Math.max(0,num('length'))*Math.max(0,num('width'))*Math.max(0,num('height'))/1000;
     const base=tariff(volume),logistics=(base*coef+base*(1-buyout))/buyout;
     const realized=price*(1-spp),taxFactor=document.getElementById('taxBase').value==='price'?1:(1-spp);
     const commissionCost=price*commission,acquiringCost=price*acquiring,adsCost=price*(internalAds+externalAds);
@@ -129,7 +134,19 @@
     const profitNode=document.getElementById('profit');profitNode.className=profit>=0?'positive':'negative';
     document.getElementById('summary').textContent=profit>=0?'При заданных условиях товар остаётся прибыльным.':'При заданных условиях товар убыточен. Измените цену или расходы.';
   }
+  function switchVolumeMode(){
+    const liters=document.getElementById('volumeMode').value==='liters';
+    if(liters){
+      const calculated=Math.max(0,num('length'))*Math.max(0,num('width'))*Math.max(0,num('height'))/1000;
+      document.getElementById('volumeLiters').value=String(Number(calculated.toFixed(3))).replace('.',',');
+    }
+    document.querySelectorAll('.dimension-input').forEach(node=>node.hidden=liters);
+    document.querySelectorAll('.liters-input').forEach(node=>node.hidden=!liters);
+    calculate();
+  }
   ids.forEach(id=>document.getElementById(id).addEventListener('input',calculate));
+  document.getElementById('volumeMode').addEventListener('change',switchVolumeMode);
+  switchVolumeMode();
   calculate();
 </script>
 </body>
