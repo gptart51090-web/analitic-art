@@ -1,11 +1,37 @@
 <!doctype html>
-<html lang="ru"><head>
+<html lang="ru">
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Оцифровка бизнеса на Wildberries и Ozon: плановая юнит-экономика, аналитика и понятные отчёты.">
+  <meta name="description" content="Плановая юнит-экономика для Wildberries и Ozon: комиссии, логистика, реклама, налоги, прибыль, маржинальность и цена безубыточности.">
   <meta name="theme-color" content="#10172a">
+  <link rel="canonical" href="https://analytic-art.vercel.app/">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://analytic-art.vercel.app/">
+  <meta property="og:title" content="Юнит-экономика WB и Ozon — расчёт прибыли">
+  <meta property="og:description" content="Универсальная Google-таблица для планового расчёта прибыли, маржинальности и цены безубыточности товаров.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%236c4df6'/%3E%3Cpath d='M19 46 29 17h7l10 29h-8l-2-7H28l-2 7zm11-14h5l-2-8z' fill='white'/%3E%3C/svg%3E">
-  <title>Analytic Art — оцифровка маркетплейсов</title>
+  <title>Юнит-экономика WB и Ozon — расчёт прибыли | Искусство аналитики</title>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Плановая юнит-экономика для Wildberries и Ozon",
+      "description": "Индивидуальная Google-таблица для расчёта прибыли, маржинальности, рентабельности и цены безубыточности товаров.",
+      "provider": {
+        "@type": "Person",
+        "name": "Юлия Артемьева",
+        "email": "gptart51090@gmail.com"
+      },
+      "areaServed": "RU",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "RUB",
+        "price": "5000",
+        "url": "https://analytic-art.vercel.app/"
+      }
+    }
+  </script>
   <style>
     :root {
       --ink: #10172a;
@@ -180,6 +206,20 @@
     .step h3 { margin: 0 0 10px; font-size: 23px; letter-spacing: -.035em; }
     .step p { margin: 0; color: var(--muted); }
 
+    .about {
+      display: grid;
+      grid-template-columns: .8fr 1.2fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+    .about-main, .about-proof { padding: clamp(28px, 5vw, 48px); border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+    .about-main h2 { margin-bottom: 18px; }
+    .about-main p { margin: 0; color: var(--muted); font-size: 18px; }
+    .proof-list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+    .proof-list li { display: flex; gap: 12px; align-items: flex-start; padding: 15px 0; border-bottom: 1px solid var(--line); font-weight: 700; }
+    .proof-list li:last-child { border-bottom: 0; }
+    .proof-list li::before { content: "✓"; flex: 0 0 26px; width: 26px; height: 26px; display: grid; place-items: center; border-radius: 9px; color: #087c60; background: #e5f8f2; }
+
     .cta {
       position: relative;
       overflow: hidden;
@@ -205,6 +245,7 @@
       .section-head { align-items: start; flex-direction: column; }
       .cards { grid-template-columns: 1fr; }
       .card { min-height: auto; }
+      .about { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 620px) {
@@ -227,14 +268,15 @@
 <body>
   <header class="nav">
     <div class="wrap nav-inner">
-      <a class="logo" href="#top" aria-label="Analytic Art — на главную">
+      <a class="logo" href="#top" aria-label="Искусство аналитики — на главную">
         <span class="logo-mark">A</span>
-        <span>Analytic Art</span>
+        <span>Искусство аналитики</span>
       </a>
       <nav class="nav-links" aria-label="Основная навигация">
-        <a href="#services">Возможности</a>
-        <a href="#process">Как работаю</a>
-        <a class="button" href="#contact">Обсудить задачу</a>
+        <a href="#services">Что получите</a>
+        <a href="#process">Как работает</a>
+        <a href="#about">Об авторе</a>
+        <a class="button" href="#contact">Получить таблицу</a>
       </nav>
     </div>
   </header>
@@ -242,23 +284,23 @@
   <main id="top">
     <div class="wrap hero">
       <div>
-        <span class="eyebrow">WB · Ozon · аналитика</span>
-        <h1>Оцифровываю бизнес на <span>маркетплейсах</span></h1>
-        <p class="lead">Помогаю увидеть реальную экономику товара: собираю показатели в понятную систему, считаю прибыль и превращаю таблицы в решения.</p>
+        <span class="eyebrow">Плановая юнит-экономика · WB и Ozon</span>
+        <h1>Юнит-экономика WB и Ozon в <span>одной таблице</span></h1>
+        <p class="lead">Проверьте прибыльность товаров до закупки. Таблица рассчитает комиссии, логистику, выкуп, рекламу, налоги и покажет прибыль, маржинальность и цену безубыточности.</p>
         <div class="hero-actions">
-          <a class="button" href="#contact">Обсудить задачу <span aria-hidden="true">→</span></a>
-          <a class="button secondary" href="#services">Что можно посчитать</a>
+          <a class="button" href="#contact">Получить таблицу от 5 000 ₽ <span aria-hidden="true">→</span></a>
+          <a class="button secondary" href="#services">Что входит</a>
         </div>
-        <div class="chips" aria-label="Направления работы">
-          <span class="chip">Плановая юнит-экономика</span>
-          <span class="chip">Понятные формулы</span>
+        <div class="chips" aria-label="Преимущества таблицы">
           <span class="chip">WB + Ozon</span>
+          <span class="chip">Без доплаты за каждый SKU</span>
+          <span class="chip">Таблица остаётся навсегда</span>
         </div>
       </div>
 
       <div class="dashboard" aria-label="Пример аналитической панели">
         <div class="dash-top">
-          <span class="dash-title">Экономика товара · пример</span>
+          <span class="dash-title">Плановая экономика товара · пример</span>
           <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
         </div>
         <div class="metrics">
@@ -279,13 +321,13 @@
     <section id="services">
       <div class="wrap">
         <div class="section-head">
-          <div><p class="kicker">Что получит бизнес</p><h2>Цифры, которые помогают принимать решения</h2></div>
-          <p class="section-note">Не просто отчёт, а прозрачная модель: видно, из чего складывается результат и какой показатель нужно изменить.</p>
+          <div><p class="kicker">Что вы получите</p><h2>Универсальную таблицу для всего ассортимента</h2></div>
+          <p class="section-note">Добавляйте товары без доплаты за каждый артикул, меняйте исходные данные и сразу сравнивайте результат.</p>
         </div>
         <div class="cards">
-          <article class="card"><div class="icon">₽</div><h3>Юнит-экономика</h3><p>Цена, себестоимость, комиссии, логистика, реклама, налоги и возвраты — в одном понятном расчёте.</p></article>
-          <article class="card"><div class="icon">↗</div><h3>Сценарии роста</h3><p>Можно заранее проверить, что произойдёт с прибылью при изменении цены, рекламы или процента выкупа.</p></article>
-          <article class="card"><div class="icon">✓</div><h3>Контроль данных</h3><p>Каждая цифра имеет источник и формулу. Пропуски не маскируются нулями, а требуют проверки.</p></article>
+          <article class="card"><div class="icon">₽</div><h3>Все расходы</h3><p>Цена, себестоимость, комиссия, эквайринг, логистика, хранение, реклама, налог, НДС и возвраты.</p></article>
+          <article class="card"><div class="icon">↗</div><h3>Главные результаты</h3><p>Прибыль, маржинальность, рентабельность, цена безубыточности и цена для целевой маржи.</p></article>
+          <article class="card"><div class="icon">✓</div><h3>Навсегда у вас</h3><p>Персональная Google-таблица, краткая инструкция, первоначальная настройка и проверка расчётов.</p></article>
         </div>
       </div>
     </section>
@@ -293,13 +335,31 @@
     <section id="process">
       <div class="wrap">
         <div class="section-head">
-          <div><p class="kicker">Процесс</p><h2>От вопроса до понятной модели</h2></div>
+          <div><p class="kicker">Как это работает</p><h2>От исходных данных до решения о закупке</h2></div>
         </div>
         <div class="process">
-          <article class="step"><h3>Фиксируем цель</h3><p>Определяем, какое решение должна поддерживать модель: выбор цены, оценка товара или рекламного бюджета.</p></article>
-          <article class="step"><h3>Собираем вводные</h3><p>Проверяем обязательные данные и отдельно отмечаем всё, чего пока не хватает.</p></article>
-          <article class="step"><h3>Считаем прозрачно</h3><p>Расчёты выполняет код по утверждённым формулам — одинаково и воспроизводимо.</p></article>
-          <article class="step"><h3>Проверяем сценарии</h3><p>Тестируем оптимистичный, базовый и рискованный варианты перед реальными вложениями.</p></article>
+          <article class="step"><h3>Вы присылаете вводные</h3><p>Маркетплейс, категорию, цену, себестоимость, габариты, налог и плановый рекламный расход.</p></article>
+          <article class="step"><h3>Я настраиваю таблицу</h3><p>Проверяю обязательные показатели и настраиваю расчёты под Wildberries или Ozon.</p></article>
+          <article class="step"><h3>Вы видите экономику</h3><p>Таблица показывает расходы, прибыль, маржу, рентабельность и минимальную цену товара.</p></article>
+          <article class="step"><h3>Используете дальше</h3><p>Добавляете новые товары и самостоятельно сравниваете варианты без оплаты за каждый SKU.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap about">
+        <div class="about-main">
+          <p class="kicker">Об авторе</p>
+          <h2>Артемьева Юлия</h2>
+          <p>Основатель проекта «Искусство аналитики». Перевожу сложные данные маркетплейсов в понятные расчёты для принятия решений.</p>
+        </div>
+        <div class="about-proof">
+          <ul class="proof-list">
+            <li>Более 10 лет работы аналитиком</li>
+            <li>Опыт работы с кабинетами лидеров категорий</li>
+            <li>Аналитика ассортимента свыше 150 SKU</li>
+            <li>Собственный кабинет продавца на Wildberries</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -308,10 +368,10 @@
       <div class="wrap">
         <div class="cta">
           <div class="cta-content">
-            <p class="kicker">Первый шаг</p>
-            <h2>Начнём с одного товара и одного понятного расчёта</h2>
-            <p>Опишите товар, плановую цену и основные расходы. Я помогу собрать модель и увидеть слабые места до запуска.</p>
-            <a class="button" href="https://github.com/gptart51090-web" target="_blank" rel="noopener noreferrer">Связаться через GitHub <span aria-hidden="true">↗</span></a>
+            <p class="kicker">Стоимость от 5 000 ₽</p>
+            <h2>Получите таблицу и считайте весь ассортимент</h2>
+            <p>Напишите, для какого маркетплейса нужен первый расчёт. В ответ я пришлю список исходных данных и уточню стоимость настройки.</p>
+            <a class="button" href="mailto:gptart51090@gmail.com?subject=Запрос%20на%20таблицу%20юнит-экономики">Получить таблицу <span aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
@@ -320,14 +380,13 @@
 
   <footer>
     <div class="wrap footer-inner">
-      <span>© <span id="year">2026</span> Analytic Art</span>
-      <span>Оцифровка и аналитика бизнеса на маркетплейсах</span>
+      <span>© <span id="year"></span> Искусство аналитики</span>
+      <span>Плановая юнит-экономика для Wildberries и Ozon</span>
     </div>
   </footer>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
-
-
-</body></html>
+</body>
+</html>
