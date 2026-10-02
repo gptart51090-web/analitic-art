@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Калькулятор юнит-экономики Wildberries онлайн</title>
+  <meta name="description" content="Бесплатный онлайн-калькулятор юнит-экономики Wildberries: прибыль, маржа, рентабельность, логистика с учётом выкупа и цена безубыточности.">
+  <link rel="canonical" href="https://analytic-art.vercel.app/calculator-wb.html">
+  <link rel="stylesheet" href="seo.css">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    .calc-shell{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr);gap:24px;align-items:start}
+    .calc-card{background:#fff;border:1px solid #e4e7ef;border-radius:22px;padding:24px;box-shadow:0 18px 48px rgba(31,42,75,.08)}
+    .calc-card h2,.calc-card h3{margin-top:0}.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .field{display:grid;gap:7px}.field label{font-size:.92rem;font-weight:700}.field small{color:#687083;line-height:1.35}
+    .field input,.field select{width:100%;border:1px solid #cfd5e2;border-radius:12px;padding:12px 13px;background:#fff;color:#10172a;font:inherit}
+    .field input:focus,.field select:focus{outline:3px solid rgba(108,77,246,.16);border-color:#6c4df6}
+    .group-title{grid-column:1/-1;margin:14px 0 0;padding-top:17px;border-top:1px solid #e7e9ef;font-size:1.05rem}
+    .result-card{position:sticky;top:94px;background:#11192c;color:#fff;border:0}.result-card p{color:#cbd2e1}
+    .result-main{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+    .metric{padding:15px;border-radius:15px;background:rgba(255,255,255,.08)}.metric span{display:block;color:#bec7da;font-size:.82rem}.metric strong{display:block;margin-top:4px;font-size:1.35rem}
+    .metric.wide{grid-column:1/-1}.positive{color:#65e1bb}.negative{color:#ff958e}.neutral{color:#ffd57a}
+    .details{margin-top:18px;border-top:1px solid rgba(255,255,255,.14);padding-top:13px}.detail{display:flex;justify-content:space-between;gap:15px;padding:7px 0;color:#d6dceb}.detail strong{color:#fff;white-space:nowrap}
+    .method{margin-top:24px}.formula{padding:14px 16px;border-radius:14px;background:#f2f4fa;font-size:.92rem}
+    .status{margin-top:13px;padding:11px 13px;border-radius:12px;background:#fff4cf;color:#705900;font-size:.88rem}
+    @media(max-width:850px){.calc-shell{grid-template-columns:1fr}.result-card{position:static}}
+    @media(max-width:560px){.form-grid{grid-template-columns:1fr}.calc-card{padding:18px}.result-main{grid-template-columns:1fr}.metric.wide,.group-title{grid-column:1}}
+  </style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Калькулятор юнит-экономики Wildberries","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"RUB"}}</script>
+</head>
+<body>
+<header class="nav"><div class="wrap nav-inner"><a class="logo" href="./"><span class="logo-mark">A</span><span>Искусство аналитики</span></a><nav class="nav-links" aria-label="Основная навигация"><a href="wildberries.html">Услуга WB</a><a href="ozon.html">Ozon</a><a href="blog/">Блог</a></nav></div></header>
+<main>
+  <section class="hero"><div class="wrap"><div class="breadcrumbs"><a href="./">Главная</a> → <a href="wildberries.html">Wildberries</a> → Калькулятор</div><span class="eyebrow">Бесплатный расчёт · FBW</span><h1>Калькулятор юнит-экономики Wildberries</h1><p>Введите свои ставки вручную. Калькулятор покажет прибыль, маржу, рентабельность, цену безубыточности и цену для вашей цели.</p></div></section>
+  <section><div class="wrap calc-shell">
+    <div class="calc-card">
+      <h2>Исходные данные</h2>
+      <p class="note">Все проценты вводятся обычным числом: например, 24,5 — это 24,5%.</p>
+      <form id="calc" class="form-grid" autocomplete="off">
+        <h3 class="group-title">Товар и цена</h3>
+        <div class="field"><label for="price">Цена до СПП, ₽</label><input id="price" inputmode="decimal" value="1500"></div>
+        <div class="field"><label for="cost">Себестоимость, ₽</label><input id="cost" inputmode="decimal" value="500"></div>
+        <div class="field"><label for="spp">СПП, %</label><input id="spp" inputmode="decimal" value="0"><small>Уменьшает цену реализации для налога и НДС, но не вашу выручку.</small></div>
+        <div class="field"><label for="commission">Комиссия WB, %</label><input id="commission" inputmode="decimal" value="24,5"><small>Берите ставку своей категории из кабинета WB.</small></div>
+
+        <h3 class="group-title">Логистика и выкуп</h3>
+        <div class="field"><label for="length">Длина, см</label><input id="length" inputmode="decimal" value="30"></div>
+        <div class="field"><label for="width">Ширина, см</label><input id="width" inputmode="decimal" value="20"></div>
+        <div class="field"><label for="height">Высота, см</label><input id="height" inputmode="decimal" value="5"></div>
+        <div class="field"><label for="logCoef">Коэффициент логистики</label><input id="logCoef" inputmode="decimal" value="1"><small>1 = 100%, 1,7 = 170%.</small></div>
+        <div class="field"><label for="buyout">Процент выкупа, %</label><input id="buyout" inputmode="decimal" value="90" min="1" max="100"><small>Вводится вручную. 100% — без возвратов.</small></div>
+        <div class="field"><label for="storage">Хранение на единицу, ₽</label><input id="storage" inputmode="decimal" value="0"></div>
+        <div class="field"><label for="acceptance">Приёмка на единицу, ₽</label><input id="acceptance" inputmode="decimal" value="0"></div>
+
+        <h3 class="group-title">Проценты и дополнительные расходы</h3>
+        <div class="field"><label for="acquiring">Эквайринг, %</label><input id="acquiring" inputmode="decimal" value="2,331"></div>
+        <div class="field"><label for="internalAds">Внутренняя реклама (ДРР), %</label><input id="internalAds" inputmode="decimal" value="0"></div>
+        <div class="field"><label for="externalAds">Внешняя реклама, %</label><input id="externalAds" inputmode="decimal" value="0"></div>
+        <div class="field"><label for="tax">Налог, %</label><input id="tax" inputmode="decimal" value="6"></div>
+        <div class="field"><label for="taxBase">База налога</label><select id="taxBase"><option value="realized" selected>Цена после СПП</option><option value="price">Цена до СПП</option></select></div>
+        <div class="field"><label for="vat">НДС</label><select id="vat"><option value="0" selected>Без НДС</option><option value="5">5%</option><option value="7">7%</option><option value="10">10%</option><option value="22">22%</option></select></div>
+        <div class="field"><label for="packaging">Упаковка, ₽</label><input id="packaging" inputmode="decimal" value="0"></div>
+        <div class="field"><label for="other">Прочие расходы, ₽</label><input id="other" inputmode="decimal" value="0"></div>
+
+        <h3 class="group-title">Цель</h3>
+        <div class="field"><label for="targetMargin">Целевая маржа, %</label><input id="targetMargin" inputmode="decimal" value="20"></div>
+        <div class="field"><label for="targetRoi">Целевая рентабельность, %</label><input id="targetRoi" inputmode="decimal" value="200"></div>
+      </form>
+      <div class="status">Тарифы логистики сейчас взяты из вашей таблицы «Юнит WB». Перед публикацией как точного инструмента нужно подтвердить их актуальность и дату действия.</div>
+    </div>
+
+    <aside class="calc-card result-card" aria-live="polite">
+      <h2>Результат</h2>
+      <p id="summary">Расчёт обновляется автоматически.</p>
+      <div class="result-main">
+        <div class="metric"><span>Прибыль с единицы</span><strong id="profit">—</strong></div>
+        <div class="metric"><span>Маржа</span><strong id="margin">—</strong></div>
+        <div class="metric"><span>Рентабельность</span><strong id="roi">—</strong></div>
+        <div class="metric"><span>Цена после СПП</span><strong id="realized">—</strong></div>
+        <div class="metric wide"><span>Цена безубыточности</span><strong id="breakEven">—</strong></div>
+        <div class="metric wide"><span>Цена для целевой маржи</span><strong id="marginPrice">—</strong></div>
+        <div class="metric wide"><span>Цена для целевой рентабельности</span><strong id="roiPrice">—</strong></div>
+      </div>
+      <div class="details">
+        <div class="detail"><span>Объём</span><strong id="volume">—</strong></div>
+        <div class="detail"><span>Базовый тариф</span><strong id="baseTariff">—</strong></div>
+        <div class="detail"><span>Логистика с выкупом</span><strong id="logistics">—</strong></div>
+        <div class="detail"><span>Комиссия</span><strong id="commissionCost">—</strong></div>
+        <div class="detail"><span>Эквайринг</span><strong id="acquiringCost">—</strong></div>
+        <div class="detail"><span>Реклама</span><strong id="adsCost">—</strong></div>
+        <div class="detail"><span>Налог</span><strong id="taxCost">—</strong></div>
+        <div class="detail"><span>НДС</span><strong id="vatCost">—</strong></div>
+      </div>
+    </aside>
+  </div></section>
+  <section><div class="wrap method"><div class="section-head"><div><p class="kicker">Методика</p><h2>Как считается логистика</h2></div></div><div class="grid-3"><article class="card"><h3>1. Объём</h3><p>Длина × ширина × высота ÷ 1000. Тариф выбирается по диапазону литров из таблицы.</p></article><article class="card"><h3>2. Доставка и возврат</h3><p>Прямая логистика умножается на коэффициент склада. Для невыкупленного товара добавляется обратная логистика по базовому тарифу.</p></article><article class="card"><h3>3. На один выкуп</h3><p>Сумма доставки и возвратов делится на долю выкупа. Поэтому низкий выкуп заметно увеличивает расход.</p></article></div><p class="formula"><strong>Формула из вашей таблицы:</strong> (базовый тариф × коэффициент + базовый тариф × (1 − выкуп)) ÷ выкуп.</p></div></section>
+  <section><div class="wrap"><div class="cta"><p class="kicker">Нужен расчёт по всему ассортименту?</p><h2>Получите рабочую Google-таблицу</h2><p>В таблице можно считать неограниченное количество товаров и подставлять фактические расходы из кабинета.</p><a class="button" href="https://t.me/Julia_artemevaa" target="_blank" rel="noopener noreferrer">Написать Юлии в Telegram</a></div></div></section>
+</main>
+<footer><div class="wrap footer-inner"><span>© 2026 Искусство аналитики</span><span><a href="./">Главная</a> · <a href="wildberries.html">Wildberries</a> · <a href="blog/">Блог</a></span></div></footer>
+<script>
+  const ids=['price','cost','spp','commission','length','width','height','logCoef','buyout','storage','acceptance','acquiring','internalAds','externalAds','tax','taxBase','vat','packaging','other','targetMargin','targetRoi'];
+  const num=id=>{const raw=document.getElementById(id).value.replace(/\s/g,'').replace(',','.');const value=Number(raw);return Number.isFinite(value)?value:0};
+  const rate=id=>num(id)/100;
+  const rub=value=>Number.isFinite(value)?new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:2}).format(value):'недостижимо';
+  const pct=value=>Number.isFinite(value)?new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(value*100)+'%':'—';
+  const set=(id,value)=>document.getElementById(id).textContent=value;
+  const tariff=volume=>volume<=.2?23:volume<=.4?26:volume<=.6?29:volume<=.8?30:volume<=1?32:46+14*(volume-1);
+  function calculate(){
+    const price=Math.max(0,num('price')),cost=Math.max(0,num('cost')),spp=Math.min(.99,Math.max(0,rate('spp')));
+    const commission=Math.max(0,rate('commission')),acquiring=Math.max(0,rate('acquiring'));
+    const internalAds=Math.max(0,rate('internalAds')),externalAds=Math.max(0,rate('externalAds'));
+    const tax=Math.max(0,rate('tax')),vat=Math.max(0,rate('vat'));
+    const buyout=Math.min(1,Math.max(.01,rate('buyout'))),coef=Math.max(0,num('logCoef'));
+    const volume=Math.max(0,num('length'))*Math.max(0,num('width'))*Math.max(0,num('height'))/1000;
+    const base=tariff(volume),logistics=(base*coef+base*(1-buyout))/buyout;
+    const realized=price*(1-spp),taxFactor=document.getElementById('taxBase').value==='price'?1:(1-spp);
+    const commissionCost=price*commission,acquiringCost=price*acquiring,adsCost=price*(internalAds+externalAds);
+    const taxCost=price*taxFactor*tax,vatFactor=(1-spp)*(vat/(1+vat)),vatCost=price*vatFactor;
+    const fixed=cost+logistics+Math.max(0,num('storage'))+Math.max(0,num('acceptance'))+Math.max(0,num('packaging'))+Math.max(0,num('other'));
+    const variable=commission+acquiring+internalAds+externalAds+taxFactor*tax+vatFactor;
+    const profit=price-fixed-price*variable,margin=price?profit/price:0,roi=cost?profit/cost:NaN;
+    const breakEven=1-variable>0?fixed/(1-variable):NaN;
+    const targetMargin=rate('targetMargin'),marginPrice=1-variable-targetMargin>0?fixed/(1-variable-targetMargin):NaN;
+    const targetRoi=rate('targetRoi'),roiPrice=1-variable>0?(fixed+targetRoi*cost)/(1-variable):NaN;
+    set('profit',rub(profit));set('margin',pct(margin));set('roi',pct(roi));set('realized',rub(realized));
+    set('breakEven',rub(breakEven));set('marginPrice',rub(marginPrice));set('roiPrice',rub(roiPrice));
+    set('volume',new Intl.NumberFormat('ru-RU',{maximumFractionDigits:3}).format(volume)+' л');set('baseTariff',rub(base));set('logistics',rub(logistics));
+    set('commissionCost',rub(commissionCost));set('acquiringCost',rub(acquiringCost));set('adsCost',rub(adsCost));set('taxCost',rub(taxCost));set('vatCost',rub(vatCost));
+    const profitNode=document.getElementById('profit');profitNode.className=profit>=0?'positive':'negative';
+    document.getElementById('summary').textContent=profit>=0?'При заданных условиях товар остаётся прибыльным.':'При заданных условиях товар убыточен. Измените цену или расходы.';
+  }
+  ids.forEach(id=>document.getElementById(id).addEventListener('input',calculate));
+  calculate();
+</script>
+</body>
+</html>
