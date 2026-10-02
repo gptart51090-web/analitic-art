@@ -33,6 +33,38 @@
       }
     }
   </script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Что входит в расчёт юнит-экономики Wildberries и Ozon?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "В расчёте учитываются цена продажи, себестоимость, комиссия маркетплейса, эквайринг, логистика, хранение, реклама, налог, возвраты и другие расходы продавца."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Можно ли рассчитывать неограниченное количество товаров?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Да. После настройки Google-таблицы продавец может добавлять новые товары и сравнивать их показатели без оплаты за каждый SKU."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Что показывает таблица юнит-экономики?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Таблица показывает плановую прибыль с единицы товара, маржинальность, рентабельность, допустимые расходы на рекламу и цену безубыточности."
+          }
+        }
+      ]
+    }
+  </script>
   <style>
     :root {
       --ink: #10172a;
@@ -207,6 +239,20 @@
     .step h3 { margin: 0 0 10px; font-size: 23px; letter-spacing: -.035em; }
     .step p { margin: 0; color: var(--muted); }
 
+    .seo-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 16px; }
+    .formula, .expenses { padding: clamp(26px, 5vw, 44px); border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+    .formula-line { margin: 24px 0 18px; padding: 18px; border-radius: 17px; color: white; background: linear-gradient(135deg, var(--violet), var(--blue)); font-size: clamp(18px, 2vw, 23px); font-weight: 850; line-height: 1.35; }
+    .formula p, .expenses p { color: var(--muted); }
+    .expense-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 22px 0 0; padding: 0; list-style: none; }
+    .expense-list li { padding: 12px 14px; border: 1px solid var(--line); border-radius: 13px; background: var(--paper); font-size: 14px; font-weight: 700; }
+    .faq { display: grid; gap: 10px; margin-top: 16px; }
+    .faq details { border: 1px solid var(--line); border-radius: 18px; background: white; }
+    .faq summary { padding: 20px 54px 20px 22px; cursor: pointer; font-weight: 800; list-style: none; position: relative; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: "+"; position: absolute; right: 22px; top: 16px; color: var(--violet); font-size: 24px; }
+    .faq details[open] summary::after { content: "−"; }
+    .faq details p { margin: 0; padding: 0 22px 20px; color: var(--muted); }
+
     .about {
       display: grid;
       grid-template-columns: .8fr 1.2fr;
@@ -247,6 +293,7 @@
       .cards { grid-template-columns: 1fr; }
       .card { min-height: auto; }
       .about { grid-template-columns: 1fr; }
+      .seo-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 620px) {
@@ -255,6 +302,7 @@
       .nav-links .button { min-height: 42px; padding: 0 14px; font-size: 13px; }
       h1 { font-size: 46px; }
       .metrics, .process { grid-template-columns: 1fr; }
+      .expense-list { grid-template-columns: 1fr; }
       .step { min-height: auto; padding-left: 72px; }
       section { padding: 72px 0; }
       .footer-inner { flex-direction: column; }
@@ -276,6 +324,7 @@
       <nav class="nav-links" aria-label="Основная навигация">
         <a href="#services">Что получите</a>
         <a href="#process">Как работает</a>
+        <a href="#calculation">Расчёт</a>
         <a href="#about">Об авторе</a>
         <a class="button" href="#contact">Получить таблицу</a>
       </nav>
@@ -343,6 +392,60 @@
           <article class="step"><h3>Я настраиваю таблицу</h3><p>Проверяю обязательные показатели и настраиваю расчёты под Wildberries или Ozon.</p></article>
           <article class="step"><h3>Вы видите экономику</h3><p>Таблица показывает расходы, прибыль, маржу, рентабельность и минимальную цену товара.</p></article>
           <article class="step"><h3>Используете дальше</h3><p>Добавляете новые товары и самостоятельно сравниваете варианты без оплаты за каждый SKU.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="calculation">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="kicker">Понятный расчёт</p><h2>Как считается юнит-экономика товара</h2></div>
+          <p class="section-note">Плановый расчёт помогает до закупки проверить, останется ли прибыль после всех расходов Wildberries или Ozon.</p>
+        </div>
+        <div class="seo-grid">
+          <article class="formula">
+            <h3>Базовая формула</h3>
+            <div class="formula-line">Прибыль = цена продажи − себестоимость − расходы маркетплейса − реклама − налоги</div>
+            <p>Маржинальность показывает, какую долю от цены продажи составляет прибыль. Точка безубыточности — минимальную цену, при которой товар не уходит в минус.</p>
+          </article>
+          <article class="expenses">
+            <h3>Какие расходы учитываются</h3>
+            <p>Набор показателей настраивается под маркетплейс, схему работы и конкретный товар.</p>
+            <ul class="expense-list">
+              <li>Себестоимость товара</li>
+              <li>Комиссия маркетплейса</li>
+              <li>Логистика и возвраты</li>
+              <li>Хранение и приёмка</li>
+              <li>Реклама и плановый ДРР</li>
+              <li>Налог и эквайринг</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="section-head" style="margin-top:72px">
+          <div><p class="kicker">Ответы на вопросы</p><h2>Что важно знать до расчёта</h2></div>
+        </div>
+        <div class="faq">
+          <details>
+            <summary>Что входит в расчёт юнит-экономики Wildberries и Ozon?</summary>
+            <p>Цена продажи, себестоимость, комиссия, эквайринг, логистика, хранение, реклама, налог, возвраты и другие расходы продавца.</p>
+          </details>
+          <details>
+            <summary>Можно ли рассчитывать неограниченное количество товаров?</summary>
+            <p>Да. После настройки таблицы вы можете добавлять новые товары и сравнивать их показатели без оплаты за каждый SKU.</p>
+          </details>
+          <details>
+            <summary>Что показывает готовая таблица?</summary>
+            <p>Плановую прибыль с единицы товара, маржинальность, рентабельность, допустимые расходы на рекламу и цену безубыточности.</p>
+          </details>
+          <details>
+            <summary>Подойдёт ли одна таблица для Wildberries и Ozon?</summary>
+            <p>Да. Расчёт настраивается под особенности каждого маркетплейса, а результаты можно сравнивать в понятном формате.</p>
+          </details>
+          <details>
+            <summary>Будут ли расчёты точными?</summary>
+            <p>Точность зависит от исходных данных и актуальности тарифов. Перед решением о закупке важно проверить комиссии, логистику и другие условия для своей категории и схемы работы.</p>
+          </details>
         </div>
       </div>
     </section>
