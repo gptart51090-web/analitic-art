@@ -69,7 +69,7 @@
         <div class="field"><label for="targetMargin">Целевая маржа, %</label><input id="targetMargin" inputmode="decimal" value="20"></div>
         <div class="field"><label for="targetRoi">Целевая рентабельность, %</label><input id="targetRoi" inputmode="decimal" value="200"></div>
       </form>
-      <div class="status">Тарифы логистики сейчас взяты из вашей таблицы «Юнит WB». Перед публикацией как точного инструмента нужно подтвердить их актуальность и дату действия.</div>
+      <div class="status" id="tariffStatus">Тарифы логистики сейчас взяты из вашей таблицы «Юнит WB». Перед публикацией как точного инструмента нужно подтвердить их актуальность и дату действия.</div>
     </div>
 
     <aside class="calc-card result-card" aria-live="polite">
@@ -87,6 +87,7 @@
       <div class="details">
         <div class="detail"><span>Объём</span><strong id="volume">—</strong></div>
         <div class="detail"><span>Базовый тариф</span><strong id="baseTariff">—</strong></div>
+        <div class="detail"><span>Источник тарифа</span><strong id="tariffSource">—</strong></div>
         <div class="detail"><span>Логистика с выкупом</span><strong id="logistics">—</strong></div>
         <div class="detail"><span>Комиссия</span><strong id="commissionCost">—</strong></div>
         <div class="detail"><span>Эквайринг</span><strong id="acquiringCost">—</strong></div>
@@ -107,7 +108,15 @@
   const rub=value=>Number.isFinite(value)?new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB',maximumFractionDigits:2}).format(value):'недостижимо';
   const pct=value=>Number.isFinite(value)?new Intl.NumberFormat('ru-RU',{maximumFractionDigits:2}).format(value*100)+'%':'—';
   const set=(id,value)=>document.getElementById(id).textContent=value;
-  const tariff=volume=>volume<=.2?23:volume<=.4?26:volume<=.6?29:volume<=.8?30:volume<=1?32:46+14*(volume-1);
+  const PUBLISHED_TARIFFS_KEY='analyticArtTariffsPublishedV1';
+  function publishedTariffs(){try{return JSON.parse(localStorage.getItem(PUBLISHED_TARIFFS_KEY))}catch{return null}}
+  function tariff(volume){
+    const published=publishedTariffs(),today=new Date().toISOString().slice(0,10);
+    const rows=(published?.logistics||[]).filter(row=>row.active===true&&row.marketplace==='WB'&&['FBW','ALL'].includes(row.scheme)&&(!row.valid_from||row.valid_from<=today)).sort((a,b)=>String(b.valid_from||'').localeCompare(String(a.valid_from||'')));
+    const row=rows.find(item=>Number(item.min_l||0)<=volume&&(item.max_l===''||item.max_l==null||Number(item.max_l)>=volume));
+    if(row){const fixed=Number(row.fixed_rub),first=Number(row.first_l_rub),next=Number(row.next_l_rub);const value=row.fixed_rub!==''&&Number.isFinite(fixed)?fixed:(Number.isFinite(first)?first+Math.max(0,volume-1)*(Number.isFinite(next)?next:0):NaN);if(Number.isFinite(value))return{value,source:'Админ-панель · '+(row.valid_from||'без даты')}}
+    const fallback=volume<=.2?23:volume<=.4?26:volume<=.6?29:volume<=.8?30:volume<=1?32:46+14*(volume-1);return{value:fallback,source:'Резервный тариф'};
+  }
   function calculate(){
     const price=Math.max(0,num('price')),cost=Math.max(0,num('cost')),spp=Math.min(.99,Math.max(0,rate('spp')));
     const commission=Math.max(0,rate('commission')),acquiring=Math.max(0,rate('acquiring'));
@@ -117,7 +126,7 @@
     const volume=document.getElementById('volumeMode').value==='liters'
       ?Math.max(0,num('volumeLiters'))
       :Math.max(0,num('length'))*Math.max(0,num('width'))*Math.max(0,num('height'))/1000;
-    const base=tariff(volume),logistics=(base*coef+base*(1-buyout))/buyout;
+    const tariffData=tariff(volume),base=tariffData.value,logistics=(base*coef+base*(1-buyout))/buyout;
     const realized=price*(1-spp),taxFactor=document.getElementById('taxBase').value==='price'?1:(1-spp);
     const commissionCost=price*commission,acquiringCost=price*acquiring,adsCost=price*(internalAds+externalAds);
     const taxCost=price*taxFactor*tax,vatFactor=(1-spp)*(vat/(1+vat)),vatCost=price*vatFactor;
@@ -129,7 +138,7 @@
     const targetRoi=rate('targetRoi'),roiPrice=1-variable>0?(fixed+targetRoi*cost)/(1-variable):NaN;
     set('profit',rub(profit));set('margin',pct(margin));set('roi',pct(roi));set('realized',rub(realized));
     set('breakEven',rub(breakEven));set('marginPrice',rub(marginPrice));set('roiPrice',rub(roiPrice));
-    set('volume',new Intl.NumberFormat('ru-RU',{maximumFractionDigits:3}).format(volume)+' л');set('baseTariff',rub(base));set('logistics',rub(logistics));
+    set('volume',new Intl.NumberFormat('ru-RU',{maximumFractionDigits:3}).format(volume)+' л');set('baseTariff',rub(base));set('tariffSource',tariffData.source);set('logistics',rub(logistics));
     set('commissionCost',rub(commissionCost));set('acquiringCost',rub(acquiringCost));set('adsCost',rub(adsCost));set('taxCost',rub(taxCost));set('vatCost',rub(vatCost));
     const profitNode=document.getElementById('profit');profitNode.className=profit>=0?'positive':'negative';
     document.getElementById('summary').textContent=profit>=0?'При заданных условиях товар остаётся прибыльным.':'При заданных условиях товар убыточен. Измените цену или расходы.';
@@ -146,6 +155,8 @@
   }
   ids.forEach(id=>document.getElementById(id).addEventListener('input',calculate));
   document.getElementById('volumeMode').addEventListener('change',switchVolumeMode);
+  const published=publishedTariffs();
+  if(published?.publishedAt){document.getElementById('tariffStatus').textContent='Используется локальная версия тарифов из админ-панели от '+new Intl.DateTimeFormat('ru-RU',{dateStyle:'medium',timeStyle:'short'}).format(new Date(published.publishedAt))+'. Эти данные доступны только в вашем браузере.'}
   switchVolumeMode();
   calculate();
 </script>
